@@ -1,35 +1,49 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Col, Row } from "antd";
+import { useEffect } from "react";
+import "./App.css";
+import { PokemonList } from "./components/PokemonList";
+import { Searcher } from "./components/Searcher";
+import { getAllPokemon } from "./services/pokeApi";
+import logo from "./statics/logo.svg";
+import { Pokemons, State } from "./types/pokemons";
+import { connect } from "react-redux";
+import { setPokemons as setPokemonsActions } from "./actions";
+import { Dispatch } from "redux";
+interface AppProps {
+  pokemons: Pokemons[];
+  setPokemons: (value: Pokemons[]) => void;
+}
+function App({ pokemons, setPokemons }: AppProps) {
+  console.log(pokemons);
 
-function App() {
-  const [count, setCount] = useState(0)
+  useEffect(() => {
+    getAllPokemon().then((data) => setPokemons(data || []));
+  }, [setPokemons]);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="App">
+      <Col span={4} offset={10}>
+        <img src={logo} alt="Pokedux" />
+      </Col>
+      <Row justify="center">
+        <Col xs={24} sm={20} md={18} lg={16} xl={14}>
+          <Searcher />
+          <PokemonList pokemons={pokemons} />
+        </Col>
+      </Row>
+    </div>
+  );
 }
 
-export default App
+interface DispatchProps {
+  setPokemons: (value: Pokemons[]) => void;
+}
+const mapStateToProps = (state: State): State => ({
+  pokemons: state.pokemons,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
+  setPokemons: (value) => dispatch(setPokemonsActions(value)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

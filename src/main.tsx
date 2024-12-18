@@ -8,8 +8,9 @@ import { legacy_createStore as createStore } from "redux";
 
 const store = createStore(pokemonsReducer);
 
-createRoot(document.getElementById("root")!).render(
+export type RootState = ReturnType<typeof store.getState>;
 
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Provider store={store}>
       <App />

@@ -24,3 +24,4 @@ export const pokemonsReducer: Reducer<State, SetPokemonAction> = (
 
   return state;
 };
+

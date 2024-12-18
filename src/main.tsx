@@ -5,8 +5,9 @@ import App from "./App.tsx";
 import { Provider } from "react-redux";
 import { pokemonsReducer } from "./reducers/pokemons.ts";
 import { legacy_createStore as createStore } from "redux";
+import { composeWithDevTools } from "@redux-devtools/extension";
 
-const store = createStore(pokemonsReducer);
+const store = createStore(pokemonsReducer, composeWithDevTools());
 
 export type RootState = ReturnType<typeof store.getState>;
 

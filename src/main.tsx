@@ -4,12 +4,25 @@ import "./index.css";
 import App from "./App.tsx";
 import { Provider } from "react-redux";
 import { pokemonsReducer } from "./reducers/pokemons.ts";
-import { legacy_createStore as createStore } from "redux";
+import {
+  Action,
+  applyMiddleware,
+  legacy_createStore as createStore,
+  Store,
+} from "redux";
 import { composeWithDevTools } from "@redux-devtools/extension";
+import { logger, featuring } from "./middlewares/index";
 
-const store = createStore(pokemonsReducer, composeWithDevTools());
+const composedEnhancers = composeWithDevTools(
+  applyMiddleware(logger, featuring),
+);
 
-export type RootState = ReturnType<typeof store.getState>;
+const store: Store<RootState, Action> = createStore(
+  pokemonsReducer,
+  composedEnhancers,
+);
+
+export type RootState = ReturnType<typeof pokemonsReducer>;
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

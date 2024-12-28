@@ -1,13 +1,21 @@
 import "./pokemonList.css";
 import { PokemonCard } from "./PokemonCard";
-import { Result } from "../types/pokemons";
+import { PokemonDetail } from "../types/pokemons";
+import { useSelector } from "react-redux";
+import { RootState } from "../reducers/rootReducer";
 
-export const PokemonList: React.FC<{ pokemons: Result[] | undefined }> = ({
-  pokemons = Array(10).fill(""),
-}) => {
+export const PokemonList: React.FC<{
+  pokemons: PokemonDetail[] | undefined;
+}> = () => {
+  const pokemons = useSelector((state: RootState) =>
+    state.getIn(["data", "pokemons"]).toJS(),
+  );
+
+  if (!pokemons) return null;
+
   return (
     <div className="pokemonList">
-      {pokemons.map((pokemon) => (
+      {pokemons.map((pokemon: PokemonDetail) => (
         <PokemonCard key={pokemon.name} pokemon={pokemon} />
       ))}
     </div>

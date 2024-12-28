@@ -1,9 +1,6 @@
-import { Action, Dispatch, Middleware } from "redux";
-import { RootState } from "../main";
-import { SetPokemonAction } from "../reducers/pokemons";
+import { Middleware } from "redux";
 
 export const logger: Middleware = (store) => (next) => (action) => {
-  console.log("dispatching", action);
   next(action);
 };
 

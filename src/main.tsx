@@ -12,6 +12,7 @@ import { rootReducer } from "./reducers/rootReducer.ts";
 const composedEnhancers = composeWithDevTools(applyMiddleware(thunk, logger));
 
 const store = createStore(rootReducer, composedEnhancers);
+export type AppDispatch = typeof store.dispatch;
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

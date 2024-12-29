@@ -1,11 +1,10 @@
-import { Map } from "immutable";
 import { combineReducers } from "redux";
-import { PokemonsState } from "./pokemons";
-import { UiState } from "./ui";
 import dataReducer from "../slices/dataSlice";
+import uiReducer from "../slices/uiSlice";
 
-export type RootState = Map<string, PokemonsState | UiState>;
+export type RootState = ReturnType<typeof rootReducer>;
 
 export const rootReducer = combineReducers({
   data: dataReducer,
+  ui: uiReducer,
 });
